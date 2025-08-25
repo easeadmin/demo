@@ -21,8 +21,8 @@ jobs:
             git pull
             npm install
             node ace build
-            mv build ../build
-            mv .env ../build/.env
+            mv -f build ../build
+            mv -f .env ../build/.env
             cd ../build
             npm install
             mkdir tmp
