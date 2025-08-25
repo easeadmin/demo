@@ -18,9 +18,7 @@ export default class AdminController extends Controller {
         })
         .body([
           amis('alert')
-            .body([
-              '本系统仅供演示使用，请勿发布违规信息，系统每小时恢复一次数据，整点时分所有数据恢复初始化。',
-            ])
+            .body([this.ctx.admin.t('demo_tips')])
             .level('danger')
             .showIcon(true)
             .className('mb-4'),

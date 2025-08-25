@@ -2,5 +2,6 @@
   "admin": "Admin",
   "demo": "Demo",
   "test": "Test",
-  "user": "User"
+  "user": "User",
+  "demo_tips": "The system will restore data once an hourly."
 }

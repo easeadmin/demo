@@ -30,7 +30,7 @@ export default defineConfig({
     logo: '/ease/images/logo.png',
     url_mode: 'history',
     static_host: '',
-    login_side_align: 'center',
+    login_side_align: 'right',
     login_side_image: '/ease/images/bg.png',
     login_default_remember: true,
   },
