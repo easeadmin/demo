@@ -9,12 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - run: npm ci
-      - run: node ace build --production
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
@@ -23,7 +17,20 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: ${{ secrets.SSH_USERNAME }}
           script: |
-            cd /path/to/your/app
-            git pull origin main
-            npm ci --production
-            pm2 restart your-app-name
+            cd /var/www/demo
+            git pull
+            npm install
+            node ace build
+            mv build ../build
+            mv .env ../build/.env
+            cd ../build
+            npm install
+            mkdir tmp
+            chmod 777 tmp
+            node ace configure easeadmin --force
+            node ace migration:run
+            node ace db:seed
+            pm2 stop node /var/www/build/bin/server.js
+            pm2 start node /var/www/build/bin/server.js
+            pm2 stop node /var/www/build/bin/console.js
+            pm2 start node /var/www/build/bin/console.js
