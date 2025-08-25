@@ -29,7 +29,6 @@ jobs:
             node ace configure easeadmin --force
             node ace migration:run
             node ace db:seed
-            cp -f ../demo/.env.example ./.env
             pm2 stop scheduler
             pm2 stop website
             pm2 start "node bin/server.js" --name=website
