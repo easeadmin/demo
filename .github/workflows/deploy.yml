@@ -10,17 +10,18 @@ jobs:
       - name: SSH to Server
         uses: appleboy/ssh-action@master
         with:
+          port: 22
           host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd /var/www/demo
             git pull
             npm install
             node ace build
+            rm -rf ../build
             mv -f build ../build
-            mv -f .env ../build/.env
+            cp -f .env ../build/.env
             cd ../build
             npm install
             mkdir tmp
@@ -28,6 +29,7 @@ jobs:
             node ace configure easeadmin --force
             node ace migration:run
             node ace db:seed
+            cp -f ../demo/.env.example ./.env
             pm2 stop node /var/www/build/bin/server.js
             pm2 start node /var/www/build/bin/server.js
             pm2 stop node /var/www/build/bin/console.js
